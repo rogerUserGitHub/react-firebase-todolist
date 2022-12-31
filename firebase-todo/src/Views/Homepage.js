@@ -13,6 +13,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
+import Footer from '../Components/Footer.js';
 
 const style = {
   bg: `h-screen w-screen p-4 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
@@ -77,44 +78,47 @@ const Homepage = () => {
   };
 
   return (
-    <div className={style.bg}>
-      <div className={style.container}>
-        <h2 className={style.welcome}>Welcome {user.email}</h2>
-        <h3 className={style.heading}>Todo App</h3>
-        <form onSubmit={createTodo} className={style.form}>
-          <input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            className={style.input}
-            type='text'
-            placeholder='Add todo'
-          ></input>
-          <button className={style.button}>
-            <AiOutlinePlus size={30} />
+    <>
+      <div className={style.bg}>
+        <div className={style.container}>
+          <h2 className={style.welcome}>Welcome {user.email}</h2>
+          <h3 className={style.heading}>Todo App</h3>
+          <form onSubmit={createTodo} className={style.form}>
+            <input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              className={style.input}
+              type='text'
+              placeholder='Add todo'
+            ></input>
+            <button className={style.button}>
+              <AiOutlinePlus size={30} />
+            </button>
+          </form>
+          <ul>
+            {todos.map((todo, index) => (
+              <Todo
+                key={index}
+                todo={todo}
+                toggleComplete={toggleComplete}
+                deleteTodo={deleteTodo}
+              />
+            ))}
+          </ul>
+          {todos.length > 0 ? (
+            <p className={style.count}>{`You have ${todos.length} todos`}</p>
+          ) : (
+            ''
+          )}
+        </div>
+        <div className={style.container2}>
+          <button className={style.logoutButton} onClick={logout}>
+            <span className={style.logOutButtonSpan}>Sign out</span>
           </button>
-        </form>
-        <ul>
-          {todos.map((todo, index) => (
-            <Todo
-              key={index}
-              todo={todo}
-              toggleComplete={toggleComplete}
-              deleteTodo={deleteTodo}
-            />
-          ))}
-        </ul>
-        {todos.length > 0 ? (
-          <p className={style.count}>{`You have ${todos.length} todos`}</p>
-        ) : (
-          ''
-        )}
+        </div>
       </div>
-      <div className={style.container2}>
-        <button className={style.logoutButton} onClick={logout}>
-          <span className={style.logOutButtonSpan}>Sign out</span>
-        </button>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
